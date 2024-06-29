@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  labels:
+    app: mongo
+spec: # deployment specific specification
+  replicas: 1 # if >1, stateful state should be used instead of deployment
+  selector: # implies that pod that has matchLabel "mongo" is belong to this deployment "mongo-deployment"
+    matchLabels:
+      app: mongo
+  template: # config of the pod within deployment config
+    metadata:
+      labels: # label that shares across pod replicas additional to unique name
+        app: mongo
+    spec:
+      containers: # docker
+      - name: mongodb
+        image: mongo:7.0.12
+        ports:
+        - containerPort: 27017 # standard MongoDB listening port
+--- # separate yaml configurations
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service # matches mongo-url in mongo-config
+spec:
+  selector: # Service need to forward its request to its endpoints (pods) according to the label selector 
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      target: 27017 # matches to the container port
+
+
+# Request-> Mongo Service (port)-> pod containerPort(target)
