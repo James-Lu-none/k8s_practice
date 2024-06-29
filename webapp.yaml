@@ -26,12 +26,12 @@ spec: # deployment specific specification
         env: 
         - name:  USER_NAME
           valueFrom:
-            secreteKeyRef:
+            secretKeyRef:
               name: mongo-secret
               key: mongo-user
         - name:  USER_PWD
           valueFrom:
-            secreteKeyRef:
+            secretKeyRef:
               name: mongo-secret
               key: mongo-password
         - name: DB_URL
@@ -51,7 +51,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3000
-      target: 3000 # matches to the container port
+      targetPort: 3000 # matches to the container port
       nodePort: 30000 # exposes the Service on each Node's IP at a static port
 
 # Request-> webapp Service (port)-> pod containerPort(target)
