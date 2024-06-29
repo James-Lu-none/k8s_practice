@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels:
+    app: webapp
+spec: # deployment specific specification
+  replicas: 3
+  selector: # implies that pod that has matchLabel "webapp" is belong to this deployment "webapp-deployment"
+    matchLabels:
+      app: webapp
+  template: # config of the pod within deployment config
+    metadata:
+      labels: # label that shares across pod replicas additional to unique name
+        app: webapp
+    spec:
+      containers: # docker
+      - name: webapp
+        image: nanajanashia/k8s-demo-app:v1.0
+        ports:
+        - containerPort: 3000 # standard webappDB listening port
+--- # separate yaml configurations
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service # matches webapp-url in webapp-config
+spec:
+  selector: # Service need to forward its request to its endpoints (pods) according to the label selector 
+    app: webapp
+  ports:
+    - protocol: TCP
+      port: 3000
+      target: 3000 # matches to the container port
+
+
+# Request-> webapp Service (port)-> pod containerPort(target)
