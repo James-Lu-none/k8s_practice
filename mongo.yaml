@@ -22,12 +22,12 @@ spec: # deployment specific specification
         env: 
         - name:  MONGO_INITDB_ROOT_USERNAME
           valueFrom:
-            secreteKeyRef:
+            secretKeyRef:
               name: mongo-secret
               key: mongo-user
         - name:  MONGO_INITDB_ROOT_PASSWORD
           valueFrom:
-            secreteKeyRef:
+            secretKeyRef:
               name: mongo-secret
               key: mongo-password
 
@@ -42,7 +42,7 @@ spec:
   ports:
     - protocol: TCP
       port: 27017
-      target: 27017 # matches to the container port
+      targetPort: 27017 # matches to the container port
 
 
 # Request-> Mongo Service (port)-> pod containerPort(target)
