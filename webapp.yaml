@@ -45,12 +45,13 @@ kind: Service
 metadata:
   name: webapp-service # matches webapp-url in webapp-config
 spec:
+  type: NodePort # default: ClusterIP (an internal Service ip)
   selector: # Service need to forward its request to its endpoints (pods) according to the label selector 
     app: webapp
   ports:
     - protocol: TCP
       port: 3000
       target: 3000 # matches to the container port
-
+      nodePort: 30000 # exposes the Service on each Node's IP at a static port
 
 # Request-> webapp Service (port)-> pod containerPort(target)
