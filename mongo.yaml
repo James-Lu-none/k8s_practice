@@ -19,6 +19,18 @@ spec: # deployment specific specification
         image: mongo:7.0.12
         ports:
         - containerPort: 27017 # standard MongoDB listening port
+        env: 
+        - name:  MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secreteKeyRef:
+              name: mongo-secret
+              key: mongo-user
+        - name:  MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secreteKeyRef:
+              name: mongo-secret
+              key: mongo-password
+
 --- # separate yaml configurations
 apiVersion: v1
 kind: Service
