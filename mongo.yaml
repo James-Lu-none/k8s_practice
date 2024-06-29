@@ -16,7 +16,7 @@ spec: # deployment specific specification
     spec:
       containers: # docker
       - name: mongodb
-        image: mongo:7.0.12
+        image: mongo:5.0
         ports:
         - containerPort: 27017 # standard MongoDB listening port
         env: 
