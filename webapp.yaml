@@ -1,3 +1,7 @@
+# webapp needs information about:
+# database endpoint from ConfigMap (where to access the database)
+# database username/password from Secrete (to authenticate to the database)
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,6 +23,22 @@ spec: # deployment specific specification
         image: nanajanashia/k8s-demo-app:v1.0
         ports:
         - containerPort: 3000 # standard webappDB listening port
+        env: 
+        - name:  USER_NAME
+          valueFrom:
+            secreteKeyRef:
+              name: mongo-secret
+              key: mongo-user
+        - name:  USER_PWD
+          valueFrom:
+            secreteKeyRef:
+              name: mongo-secret
+              key: mongo-password
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config
+              key: mongo-url
 --- # separate yaml configurations
 apiVersion: v1
 kind: Service
